@@ -1,3 +1,18 @@
+# Обновить зависимости
+### `apt-get update`
+
+# Поставить npm командой 
+### `apt-get install npm`
+
+# Установить зависимости React
+### `npm install react-app-rewired env-cmd --save`
+
+# В папку положим код исполняемого файла
+### `cd /opt`
+
+# Запустим веб-сервер
+### `npm install react-app-rewired env-cmd --save`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
