@@ -11,7 +11,7 @@
 ### `cd /opt`
 
 # Запустим веб-сервер
-### `npm install react-app-rewired env-cmd --save`
+### `npm start --host=... --port=...`
 
 # Getting Started with Create React App
 
