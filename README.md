@@ -1,70 +1,119 @@
-# Getting Started with Create React App
+Тема проекта: создание платформы для учета корпоративных ресурсов. Мы выбрали эту тему, потому что она является актуальной для нашего текущего места работы.
+	Цель работы: разработать интернет-ресурс, который будет отвечать основным требованиям ведения учета техники предприятия и иметь необходимый функционал для точной и корректной работы.
+Задачи работы:
+1.	Ознакомиться с основными принципами работы систем учета.
+2.	Выбрать язык и СУБД для реализации задачи.
+3.	Внедрить на практике изученные методы работы с микросервисной архитектурой информационных систем.
+4.	Изучить принцип контейнеризации и основы Docker.
+5.	Создать базу данных, разработать API для корректной работы с ней.
+6.	Разработать веб-ресурс и пользовательский интерфейс. 
+7.	Научиться связывать микросервисы, отвечающие за веб-сайт и API.
+8.	Простроить алгоритмы корректной и продуктивной работы над проектом в команде.
+9.	Научиться составлять и анализировать ТЗ и правильно реализовывать его.
+    
+Техническое задание от заказчика:
+Необходимо разработать веб-ресурс, предполагающий возможность работать с фиксацией списанного и поступившего оборудования в рамках всей организации. Сделать реализацию полного доступа к данным в рамках Full REST-API и возможность работать как со стороны пользователя, так и администратора системы.
+Подготовка схемы внутренних связей:
+<img width="761" height="609" alt="Диаграмма бд drawio" src="https://github.com/user-attachments/assets/05f1f52c-3813-448a-b7df-c94819a29627" />
+<img width="1129" height="1271" alt="процессы-2 drawio" src="https://github.com/user-attachments/assets/b7430834-4058-455a-9c2d-9cc4e0b09c37" />
+<img width="751" height="609" alt="Диаграмма классов drawio" src="https://github.com/user-attachments/assets/527cbadc-e123-40b6-8413-205d6cb6bbdc" />
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Работа над front-частью веб-ресурса
+После изучения предложенных методов реализации веб-системы было решено использовать фреймворк React для создания front-части приложения. 
+Во-первых, React предлагает высокую производительность благодаря виртуальному DOM, который минимизирует количество перерисовок страницы, улучшая скорость работы приложения. Во-вторых, React способствует созданию удобных и масштабируемых интерфейсов благодаря компонентной архитектуре, где каждый компонент независим. Это упрощает разработку и тестирование, а также улучшает поддержку кода.
+Кроме того, React имеет активное сообщество и богатую экосистему, включая библиотеки и инструменты, такие как Redux для управления состоянием и React Router для маршрутизации, что позволяет легко создавать сложные и функциональные приложения. 
+Наконец, React легко интегрируется с другими библиотеками и фреймворками, что позволяет использовать его в различных проектах. Всё это делает React одним из самых популярных и эффективных инструментов для разработки современного веб-фронтенда.
+Для разработки посредством мощностей React были проделаны следующие действия: 
+1.	Установка пакетов фреймворка в среду разработки VS Code.
+Из терминала VS Code вызваны следующие команды:
+npx create-react-app tech //запуск пакетов
+cd tech //переход в папку проекта
+npm start //построение и запуск проекта
+2.	После установки фреймворка из командной строки архитектура
+front-части была следующая:
+ <img width="419" height="614" alt="image" src="https://github.com/user-attachments/assets/6f62c311-7b20-4ac1-ad7b-5491ee251c88" />
 
-## Available Scripts
+3.	Далее была произведена разработка внешней оболочки будущего
+приложения, добавлена удобная таблица для хранения всей необходимой информации о технике и предусмотрены кнопки, чтобы пользователь мог изменять эту таблицу и добавлять туда новые записи. 
+4.	Первоначально дизайн сайта был разработан посредством языка
+верстки HTML и каскадной таблицы стилей CSS (без интеграции оживления сайта при помощи JS) и выглядел он таким образом:
+ 
+<img width="982" height="146" alt="image" src="https://github.com/user-attachments/assets/1e14c115-4cc8-4e3a-bea3-923a453f76df" />
 
-In the project directory, you can run:
+После доработки его на React сайт стал выглядеть так:
+ 
+<img width="975" height="466" alt="image" src="https://github.com/user-attachments/assets/a46c1ef2-bd4f-4c3e-86ec-2d43af509b32" />
 
-### `npm start`
+При создании шаблона таблицы были использованы библиотеки axios и  antd. 
+Библиотека axios используется для получения данных с back части приложения путем использования метода get. Данные для проверки выводятся в консоль браузера. 
+Библиотека antd обладает новейшим современным функционалом для создания шаблонов компонентов, проста в импортировании и использовании. Внедряем ее в проект при помощи импорта:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+import { Table } from "antd";
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Далее создаем лямбда-функцию Арр, в которой вызываются хуки useState и useEffect, а также создается таблица с данными. Ниже представлена схема таблицы учета техники:
+const columns = [
+    {
+      title: 'Владелец',
+      dataIndex: 'name',
+      render: text => <a>{text}</a>,
+    },
+    {
+      title: 'Тип',
+      className: 'column-type',
+      dataIndex: 'type',
 
-### `npm test`
+    },
+    {
+      title: 'Помещение',
+      dataIndex: 'address',
+    },
+    {
+      title: 'Номер',
+      dataIndex: 'number',
+    },
+    {
+      title: 'Действие',
+      dataIndex: '',
+      key: 'x',
+      render: () => <a>Изменить</a>,
+    },
+  ];
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Для того, чтобы удостовериться в исправности взаимного функционирования front и back частей веб-ресурса, был сделан тестовый запрос с front части на back, его код выглядел так:
+const fetchInfo =() => {
+    axios.get('http://10.10.5.24:8000/json/').then(r => {
+      console.log(r)
+    })
+  }
+По факту работы с коммуникацией частей проекта мы столкнулись с проблемой блокировки CORS:
 
-### `npm run build`
+ 
+<img width="974" height="287" alt="image" src="https://github.com/user-attachments/assets/8e8fd36e-8a88-424b-89a9-8973287cb43f" />
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Решили мы ее следующим образом:
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'corsheaders',
+]
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+CORS_ORIGIN_ALLOW_ALL = True
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+После этого тестовые данные с бэка были получены успешно:
+ 
+<img width="974" height="323" alt="image" src="https://github.com/user-attachments/assets/916e6d77-b378-4b1b-b42d-9a028f3fe99c" />
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
